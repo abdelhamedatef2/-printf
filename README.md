@@ -1,90 +1,146 @@
-# 0x11. C - printf 
-
-- Writing our own `printf` function, this is a project done under [ALX Low Level Programming](https://github.com/iAmG-r00t/alx-low_level_programming).
-
-## Resource
-
-- [secrets of printf](https://www.cypress.com/file/54761/download)
-- [Implementing printf and scanf in C](https://iq.opengenus.org/how-printf-and-scanf-function-works-in-c-internally/)
-- [All About Printf](https://akshatshibu.wordpress.com/2015/07/22/all-about-printf/)
-
+# C - printf
 
 ## Description
+Create an simple exact replica of the printf function found in the C programming language. Using Variadic functions, structs, and multiple helper functions, the program we created will be able display inputed characters, strings, integers, and decimals (base 10). Whatever format specifier you use with our `_prinf` function, should display the same results when used by the actual printf function. This project is to show an alternative method of creating your very own simple printf function in the C programming language.
 
-- The function `_printf` writes output to stdout. The function writes under the control of a `format` string that specifies how subsequent arguments (accessed via the variable-length argument facilities of standard library `stdarg`) are converted for output.
+If successfully compiled and executed, the function should return the number of characters printed (excluding the null byte used to end output to strings). And if it fails, then the function should return a `(-1)` upon error and `"(null)"` if the string argument takes in NULL. If the format specifier is unkown, then the output would print out the format specifier as a string.
 
-- Prototype: `int _printf(const char *format, ...);`
+The code was made to handle all the format specifiers, but because of the simplicity of our code, we only used 5 so far. In the future, we will update the printf repository to handle more format specifiers.
 
-## Return
+### Prototype
+`int _printf(const char *format, ...)`
 
-- Upon success, `_printf` returns the number of characters printed (**excluding the terminating null byte used to end output to strings**). If an output error is encountered, the function returns `-1`.
+- Returns: the number of characters printed (excluding the null byte used to end output to strings).
+- Write output to stdout, the standard output stream.
+- `format` is a character string. The format string is composed of zero or more directives. See `man 3 printf` for more detail.
+### File Usage
+File Name | Description
+--- | ---
+[_printf.c](https://github.com/tassavarat/printf/blob/master/_printf.c) | The main _prinf.c file is used to handle the array containing all the format specifiers used. As well as where the function starts to execute.
+[_get_print.c](https://github.com/tassavarat/printf/blob/master/get_print.c) | Contains main body of our code that uses loops and if statements in order to execute the functions connected to the format specifiers. As well as testing for any test cases.
+[helper_functions.c](https://github.com/tassavarat/printf/blob/master/helper_functions.c) | Is where we placed all the helper functions used within our code. Because of Holberton School's limit of 5 helper functions per file, any other helper function files we will make in the future will only contain a max limit of 5 or less.
+[holberton.h](https://github.com/tassavarat/printf/blob/master/holberton.h) | The header file we used to contain all our the prototypes used as well as containing our struct and the standard libraries used.
+[man_3_printf](https://github.com/tassavarat/printf/blob/master/man_3_printf) | The man page we created for our _printf function.
+[helper_functions2.c](https://github.com/tassavarat/printf/blob/master/helper_functions2.c) | Another file containing more helper functions. Specifically, the functions for our converter, reverse, and Rot13.
+[helper_functions3.c](https://github.com/tassavarat/printf/blob/master/helper_functions3.c) | Another file contain more helper functions. The file contains the functions t handle the hexidecimals and binary specifiers.
+### Format Specifiers
+The _printf program will replicate the effects of the listed % format specifiers as when used with printf.
 
-## Format of the Argument String
-
-- The `format` string argument is a constant character string composed of zero or more directives: ordinary characters (apart from `%`) which are copied unchanged to the output stream; and conversion specifications, each of which results in fetching zero or more subsequent arguments.
-- Conversion specification is introduced by the character `%` and ends with a conversion specifier (which in whole make up the format specifier.)
-
-## General Requirements
-
-- All your files will be compiled on Ubuntu 20.04 LTS using `gcc`, using the options `-Wall -Werror -Wextra -pedantic -std=gnu89`
-- All your files should end with a new line.
-- No more than 5 functions per file.
-- You are not allowed to use global variables.
-- The prototypes of all your functions should be included in your header file called `holberton.h`
-- All your header files should be include guarded.
-
-### Authorized functions and macros
-
-- `write` (`man 2 write`)
-- `malloc` (`man 3 malloc`)
-- `free` (`man 3 free`)
-- `va_start` (`man 3 va_start`)
-- `va_end` (`man 3 va_end`)
-- `va_copy` (`man 3 va_copy`)
-- `va_arg` (`man 3 va_arg`)
-
-### Github
-
-- There should be one project repository per group. If you clone/fork/whatever a project repository with the same name before the second deadline, you risk a 0% score.
-
+Function name | Description | Format Specifier
+--- | --- | ---
+`_print_char` | Prints a single character | `%c`
+`_print_string` | Prints a string of characters | `%s`
+`_print_percent` | Prints a % | `%%`
+`_print_int` | Prints an integer in base 10| `%d` & `%i`
+`_print_reverse` | Prints the string in reverse | `r`
+`_print_rot13` | Converts the string into Rot13 | `R`
+`_print_binary` | Prints the binary form of the integer | `b`
+`_print_unsigned` | Prints an unsigned integer | `u`
+`_print_octal` | Prints and octal number | `o`
+`_print_hex_l` | Prints the lower case hexidecimal number | `x`
+`_print_hex_u` | Prints the upper case hexidecimal number | `X`
 ### Compilation
 
-- The code can be compiled like this:
-	```sh
-	gcc -Wall -Werror -Wextra -pedantic -std=gnu89 test/main.c *.c -o print
-	```
-- All test files will be in the [test](./test) directory.
+Our code can be compiled in either example
+```
+$ gcc -Wall -Werror -Wextra -pedantic *.c
+```
+or (if you want to test for unknown format specifiers)
 
+```
+$ gcc -Wall -Werror -Wextra -pedantic -Wno-format *.c
+```
+## Testing the Program
 
-### Authors
+### The main.c File Test
+You'll make a main.c file to test the program, in order to see if the custom _printf function works exactly like how regular printf manages to display the number of characters printed.
+The main.c file should contain the code displayed below. (Feel free to change the code inside main.c to test for any other test cases not currently displayed.)
+```
+Timmy@ubuntu:~/c/printf$ cat main.c
+#include <limits.h>
+#include <stdio.h>
+#include "holberton.h"
 
-- Abdelhamed Atef
-- [@abdelhamedatef2](https://github.com/abdelhamedatef2) 👨‍💻
+/**
+ * main - Entry point
+ *
+ * Return: Always 0
+ */
+int main(void)
+{
+    int len;
+    int len2;
+    unsigned int ui;
+    void *addr;
 
-
-## Tasks
-
-0. **I'm not going anywhere. You can print that wherever you want to. I'm here and I'm a Spur for life** : A function that produces output according to a format.
-	- Prototype: int `_printf(const char *format, ...);`
-	- Returns: the number of characters printed (excluding the null byte used to end output to strings)
-	- write output to stdout, the standard output stream
-	- `format` is a character string. The format string is composed of zero or more directives. See `man 3 printf` for more detail. You need to handle the following conversion specifiers:
-		- `c`
-		- `s`
-		- `%`
-	- You don’t have to reproduce the buffer handling of the C library `printf` function.
-	- You don’t have to handle the flag characters.
-	- You don’t have to handle field width.
-	- You don’t have to handle precision.
-	- You don’t have to handle the length modifiers.
-
-1. **Education is when you read the fine print. Experience is what you get if you don't** : Handle the following conversion specifiers:
-	- `d`
-	- `i`
-	- You don’t have to handle the flag characters.
-	- You don’t have to handle field width.
-	- You don’t have to handle precision.
-	- You don’t have to handle the length modifiers.
-
-2. **Just because it's in print doesn't mean it's the gospel** : Create a man page for your function.
-	- How to read the man page: `man ./man_3_printf`
+    len = _printf("Let's try to printf a simple sentence.\n");
+    len2 = printf("Let's try to printf a simple sentence.\n");
+    ui = (unsigned int)INT_MAX + 1024;
+    addr = (void *)0x7ffe637541f0;
+    _printf("Length:[%d, %i]\n", len, len);
+    printf("Length:[%d, %i]\n", len2, len2);
+    _printf("Negative:[%d]\n", -762534);
+    printf("Negative:[%d]\n", -762534);
+    _printf("Unsigned:[%u]\n", ui);
+    printf("Unsigned:[%u]\n", ui);
+    _printf("Unsigned octal:[%o]\n", ui);
+    printf("Unsigned octal:[%o]\n", ui);
+    _printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
+    printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
+    _printf("Character:[%c]\n", 'H');
+    printf("Character:[%c]\n", 'H');
+    _printf("String:[%s]\n", "I am a string !");
+    printf("String:[%s]\n", "I am a string !");
+    _printf("Address:[%p]\n", addr);
+    printf("Address:[%p]\n", addr);
+    len = _printf("Percent:[%%]\n");
+    len2 = printf("Percent:[%%]\n");
+    _printf("Len:[%d]\n", len);
+    printf("Len:[%d]\n", len2);
+    _printf("Unknown:[%r]\n");
+    printf("Unknown:[%r]\n");
+    return (0);
+}
+```
+### Output Check
+Your output should after compiling the program should look something like what's displayed below.
+```
+Timmy@ubuntu:~/c/printf$ gcc -Wall -Wextra -Werror -pedantic -Wno-format *.c
+Timmy@ubuntu:~/c/printf$ ./printf
+Let's try to printf a simple sentence.
+Let's try to printf a simple sentence.
+Length:[39, 39]
+Length:[39, 39]
+Negative:[-762534]
+Negative:[-762534]
+Unsigned:[2147484671]
+Unsigned:[2147484671]
+Unsigned octal:[20000001777]
+Unsigned octal:[20000001777]
+Unsigned hexadecimal:[800003ff, 800003FF]
+Unsigned hexadecimal:[800003ff, 800003FF]
+Character:[H]
+Character:[H]
+String:[I am a string !]
+String:[I am a string !]
+Address:[0x7ffe637541f0]
+Address:[0x7ffe637541f0]
+Percent:[%]
+Percent:[%]
+Len:[12]
+Len:[12]
+Unknown:[%r]
+Unknown:[%r]
+Timmy@ubuntu:~/c/printf$
+```
+### Bugs
+It should be noted that our code does not handle the following conditions:
+* You don’t have to reproduce the buffer handling of the C library printf function.
+* You don’t have to handle the flag characters.
+* You don’t have to handle field width.
+* You don’t have to handle precision.
+* You don’t have to handle the length modifiers.
+### About
+All files were created and compiled on `Ubuntu 14.04.4 LTS` using `GCC 4.8.4`
+## Authors
+* **abdelhamed atef** - [abdelhamed](https://github.com/abdelhamedatef2)
